@@ -446,8 +446,8 @@ class spamassassin(
   validate_re($dns_available, '^(test|yes|no)$',
   'dns_available parameter must have a value of: test, yes or no')
 
-  validate_re($shortcircuit_CMAE_1, '^(on|off)$',
-  'shortcircuit_CMAE_1 parameter must have a value of: test, yes or no')
+  validate_re($shortcircuit_CMAE_1, '^(undef|on|off)$',
+  'shortcircuit_CMAE_1 parameter must have a value of: on or off')
 
   validate_re($shortcircuit_priority_CMAE_1, '^(-)?[1-9]([0-9]*)?$',
   'shortcircuit_priority_CMAE_1 parameter should be a number')
