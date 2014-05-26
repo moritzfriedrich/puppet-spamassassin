@@ -398,11 +398,11 @@ class spamassassin(
   $dkim_enabled                       = true,
   $dkim_timeout                       = undef,
   # CMAE Plugin
-  $CMAE_enabled                       = false,
-  $CMAE_full_CMAE_1                   = undef,
-  $CMAE_describe_CMAE_1               = undef,
-  $CMAE_score_CMAE_1                  = undef,
-  $CMAE_add_header_all_CMAE_Analysis  = undef,
+  $cmae_enabled                       = false,
+  $cmae_full_CMAE_1                   = undef,
+  $cmae_describe_CMAE_1               = undef,
+  $cmae_score_CMAE_1                  = undef,
+  $cmae_add_header_all_CMAE_Analysis  = undef,
 ) {
   include spamassassin::params
 
@@ -425,7 +425,7 @@ class spamassassin(
   validate_bool($awl_sql_enabled)
   validate_bool($shortcircuit_enabled)
   validate_bool($dkim_enabled)
-  validate_bool($CMAE_enabled)
+  validate_bool($cmae_enabled)
 
   validate_hash($score_tests)
 
@@ -452,7 +452,7 @@ class spamassassin(
   validate_re($shortcircuit_priority_CMAE_1, '^(-)?[1-9]([0-9]*)?$',
   'shortcircuit_priority_CMAE_1 parameter should be a number')
 
-  validate_re($CMAE_score_CMAE_1, '^[0-9]([0-9]*)?(\.[0-9]{1,2})?$',
+  validate_re($cmae_score_CMAE_1, '^[0-9]([0-9]*)?(\.[0-9]{1,2})?$',
   'CMAE_score_CMAE_1 parameter should be a number')
   
   $final_skip_rbl_checks   = bool2num($skip_rbl_checks)
