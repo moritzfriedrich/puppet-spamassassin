@@ -557,6 +557,16 @@ class spamassassin(
     }
   }
 
+  if $cmae_enabled {
+    file_line { 'enable_cmae' :
+      path    => "${spamassassin::params::configdir}/init.pre",
+      line    => "loadplugin Mail::SpamAssassin::Plugin::CMAE",
+      match   => "^\s*loadplugin Mail::SpamAssassin::Plugin::CMAE\s*$",
+      notify  => Service['spamassassin'],
+      require => Package['spamassassin']
+    }
+  }
+
   file {
     "${spamassassin::params::configdir}/local.cf":
       ensure  => present,

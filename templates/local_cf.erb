@@ -51,10 +51,10 @@ blacklist_from      <%= val %>
 <% @blacklist_to.each do |val| -%>
 blacklist_to        <%= val %>
 <% end -%>
-<% if @bayes_enabled -%>
 
 #   Use Bayesian classifier (default: 1)
 #
+<% if @bayes_enabled -%>
 use_bayes           1
 bayes_use_hapaxes   <%= @final_bayes_use_hapaxes %>
 bayes_auto_expire   <%= @final_bayes_auto_expire %>
@@ -75,6 +75,8 @@ bayes_sql_override_username <%= @bayes_sql_override_username %>
 bayes_path         <%= @bayes_path %>
 <% end -%>
 <% end -%>
+<% end -%>
+use_bayes           0
 <% end -%>
 <% if @awl_enabled -%>
 
