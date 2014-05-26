@@ -153,8 +153,27 @@ spamcop_to_address   <%= @spamcop_to_address %>
 spamcop_max_report_size <%= @spamcop_max_report_size %>
 <% end -%>
 <% end -%>
-<% if @shortcircuit_enabled -%>
 
+<% if @CMAE_enabled -%>
+# CMAE Plugin (Cloudmark)
+#
+ifplugin Mail::SpamAssassin::Plugin::CMAE
+<% if @CMAE_full_CMAE_1 -%>
+full        CMAE_1  <%= @CMAE_full_CMAE_1 %>
+<% end -%>
+<% if @CMAE_describe_CMAE_1 -%>
+describe    CMAE_1  <%= @CMAE_describe_CMAE_1 %>
+<% end -%>
+<% if @CMAE_score_CMAE_1 -%>
+score       CMAE_1  <%= @CMAE_score_CMAE_1 %>
+<% end -%>
+<% if @CMAE_add_header_all_CMAE_Analysis -%>
+add_header  all CMAE-Analysis  <%= @CMAE_add_header_all_CMAE_Analysis %>
+<% end -%>
+endif
+<% end -%>
+
+<% if @shortcircuit_enabled -%>
 #   Some shortcircuiting
 # 
 <% if @shortcircuit_user_in_whitelist -%>
@@ -180,6 +199,14 @@ shortcircuit SUBJECT_IN_BLACKLIST    <%= @shortcircuit_subject_in_blacklist %>
 <% end -%>
 <% if @shortcircuit_all_trusted -%>
 shortcircuit ALL_TRUSTED             <%= @shortcircuit_all_trusted %>
+<% end -%>
+<% if @CMAE_enabled -%>
+<% if @shortcircuit_CMAE_1 -%>
+priority CMAE_1                      <%= @shortcircuit_priority_CMAE_1 %>
+<% end -%>
+<% if @shortcircuit_CMAE_1 -%>
+shortcircuit CMAE_1                  <%= @shortcircuit_CMAE_1 %>
+<% end -%>
 <% end -%>
 <% end -%>
 
