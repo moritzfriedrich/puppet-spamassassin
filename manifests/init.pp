@@ -320,7 +320,7 @@ class spamassassin(
   $spamd_nouserconfig                 = false,
   $spamd_allowtell                    = false,
   $spamd_log_enabled                  = false,
-  $spamd_log_path                     = '/var/log/spamd.log'
+  $spamd_log_path                     = '/var/log/spamd.log',
   # Scoring options
   $required_score                     = 5,
   $score_tests                        = {},
