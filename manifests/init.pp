@@ -319,6 +319,8 @@ class spamassassin(
   $spamd_allowed_ips                  = '127.0.0.1/32',
   $spamd_nouserconfig                 = false,
   $spamd_allowtell                    = false,
+  $spamd_log_enabled                  = false,
+  $spamd_log_path                     = '/var/log/spamd.log'
   # Scoring options
   $required_score                     = 5,
   $score_tests                        = {},
@@ -625,9 +627,13 @@ class spamassassin(
       require => Package['spamassassin'],
     }
   }
+
+  file { $spamd_log_path:
+    ensure => file,
+  }
   
   if $service_enabled {
-    $extra_options = inline_template("-m <%= @spamd_max_children %> -i <%= @spamd_listen_address %> -A <%= @spamd_allowed_ips %><% if @spamd_nouserconfig -%> --nouser-config<% end -%><% if @spamd_allowtell -%> --allow-tell<% end -%>")
+    $extra_options = inline_template("-m <%= @spamd_max_children %> -i <%= @spamd_listen_address %> -A <%= @spamd_allowed_ips %><% if @spamd_nouserconfig -%> --nouser-config<% end -%><% if @spamd_allowtell -%> --allow-tell<% end -%><% if @spamd_log_enabled -%> -s <%= @spamd_log_path %><% end -%>")
 
     file_line { 'spamd_options' :
       path    => $spamassassin::params::spamd_options_file,
