@@ -321,6 +321,7 @@ class spamassassin(
   $spamd_allowtell                    = false,
   $spamd_log_enabled                  = false,
   $spamd_log_path                     = '/var/log/spamd.log',
+  $spamd_custom_template_enabled      = false,
   # Scoring options
   $required_score                     = 5,
   $score_tests                        = {},
@@ -404,7 +405,7 @@ class spamassassin(
   $cmae_full_CMAE_1                   = undef,
   $cmae_describe_CMAE_1               = undef,
   $cmae_score_CMAE_1                  = undef,
-  $cmae_add_header_all_CMAE_Analysis  = undef,
+  $cmae_add_header  = undef,
 ) {
   include spamassassin::params
 
