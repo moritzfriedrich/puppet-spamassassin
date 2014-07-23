@@ -219,5 +219,5 @@ dkim_timeout       <%= @dkim_timeout %>
 <% end -%>
 
 <% if @spamd_custom_template_enabled -%>
-<%= scope.function_template(['report_template.erb']) %>
+<%= scope.function_template(['spamassassin/report_template.erb']) %>
 <% end -%>
