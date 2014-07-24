@@ -325,11 +325,6 @@ class spamassassin(
   # Scoring options
   $required_score                     = 5,
   $score_tests                        = {},
-  # Whitelist and blacklist options
-  $whitelist_from                     = [],
-  $whitelist_to                       = [],
-  $blacklist_from                     = [],
-  $blacklist_to                       = [],
   # Message tagging options
   $rewrite_header_subject             = undef,
   $rewrite_header_from                = undef,
@@ -405,7 +400,22 @@ class spamassassin(
   $cmae_full_CMAE_1                   = undef,
   $cmae_describe_CMAE_1               = undef,
   $cmae_score_CMAE_1                  = undef,
-  $cmae_add_header  = undef,
+  $cmae_add_header                    = undef,
+  # whitelist and blacklist options
+  $whitelist_from                     = [],
+  $unwhitelist_from                   = [],
+  $whitelist_from_rcvd                = {},
+  $def_whitelist_from_rcvd            = {},
+  $whitelist_allows_relays            = [],
+  $unwhitelist_from_rcvd              = [],
+  $blacklist_from                     = [],
+  $unblacklist_from                   = [],
+  $whitelist_to                       = [],
+  $more_spam_to                       = [],
+  $blacklist_to                       = [],
+  $whitelist_auth                     = [],
+  $def_whitelist_auth                 = [],
+  $unwhitelist_auth                   = [],
 ) {
   include spamassassin::params
 
@@ -431,14 +441,24 @@ class spamassassin(
   validate_bool($cmae_enabled)
 
   validate_hash($score_tests)
+  validate_hash($whitelist_from_rcvd)
+  validate_hash($def_whitelist_from_rcvd)
 
-  validate_array($whitelist_from)
-  validate_array($whitelist_to)
-  validate_array($blacklist_from)
-  validate_array($blacklist_to)
   validate_array($trusted_networks)
   validate_array($internal_networks)
   validate_array($bayes_ignore_header)
+  validate_array($whitelist_from)
+  validate_array($unwhitelist_from)
+  validate_array($whitelist_allows_relays)
+  validate_array($unwhitelist_from_rcvd)
+  validate_array($blacklist_from)
+  validate_array($unblacklist_from)
+  validate_array($whitelist_to)
+  validate_array($more_spam_to)
+  validate_array($blacklist_to)
+  validate_array($whitelist_auth)
+  validate_array($def_whitelist_auth)
+  validate_array($unwhitelist_auth)
 
   validate_re($spamd_max_children, '^[1-9]([0-9]*)?$',
   'spamd_max_children parameter should be a number')

@@ -39,18 +39,6 @@ internal_networks    <%= val %>
 <% end -%>
 skip_rbl_checks     <%= @final_skip_rbl_checks %>
 dns_available       <%= @dns_available %>
-<% @whitelist_from.each do |val| -%>
-whitelist_from      <%= val %>
-<% end -%>
-<% @whitelist_to.each do |val| -%>
-whitelist_to        <%= val %>
-<% end -%>
-<% @blacklist_from.each do |val| -%>
-blacklist_from      <%= val %>
-<% end -%>
-<% @blacklist_to.each do |val| -%>
-blacklist_to        <%= val %>
-<% end -%>
 
 #   Use Bayesian classifier (default: 1)
 #
@@ -219,5 +207,7 @@ dkim_timeout       <%= @dkim_timeout %>
 <% end -%>
 
 <% if @spamd_custom_template_enabled -%>
-<%= scope.function_template(['spamassassin/report_template.erb']) %>
+<%= scope.function_template([@module_name+'/report_template.erb']) %>
 <% end -%>
+
+<%= scope.function_template([@module_name+'/whitelistandblacklist.erb']) %>

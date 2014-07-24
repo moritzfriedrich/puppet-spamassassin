@@ -1,0 +1,59 @@
+<% @whitelist_from.each do |mailaddress| -%>
+whitelist_from  <%= mailaddress %>
+<% end -%>
+
+<% @unwhitelist_from.each do |mailaddress| -%>
+unwhitelist_from  <%= mailaddress %>
+<% end -%>
+
+<% @whitelist_from_rcvd.each do |domainname, mailaddresses| -%>
+<% @mailaddresses.each do |mailaddress| -%>
+whitelist_from_rcvd  <%= mailaddress %>  <%= domainname %>
+<% end -%>
+<% end -%>
+
+<% @def_whitelist_from_rcvd.each do |domainname, mailaddresses| -%>
+<% @mailaddresses.each do |mailaddress| -%>
+def_whitelist_from_rcvd  <%= mailaddress %>  <%= domainname %>
+<% end -%>
+<% end -%>
+
+<% @whitelist_allows_relays.each do |mailaddress| -%>
+whitelist_allows_relays  <%= mailaddress %>
+<% end -%>
+
+<% @unwhitelist_from_rcvd.each do |mailaddress| -%>
+unwhitelist_from_rcvd  <%= mailaddress %>
+<% end -%>
+
+<% @blacklist_from.each do |mailaddress| -%>
+blacklist_from  <%= mailaddress %>
+<% end -%>
+
+<% @unblacklist_from.each do |mailaddress| -%>
+unblacklist_from  <%= mailaddress %>
+<% end -%>
+
+<% @whitelist_to.each do |mailaddress| -%>
+whitelist_to  <%= mailaddress %>
+<% end -%>
+
+<% @more_spam_to.each do |mailaddress| -%>
+more_spam_to  <%= mailaddress %>
+<% end -%>
+
+<% @blacklist_to.each do |mailaddress| -%>
+blacklist_to  <%= mailaddress %>
+<% end -%>
+
+<% @whitelist_auth.each do |mailaddress| -%>
+whitelist_auth  <%= mailaddress %>
+<% end -%>
+
+<% @def_whitelist_auth.each do |mailaddress| -%>
+def_whitelist_auth  <%= mailaddress %>
+<% end -%>
+
+<% @unwhitelist_auth.each do |mailaddress| -%>
+unwhitelist_auth  <%= mailaddress %>
+<% end -%>
