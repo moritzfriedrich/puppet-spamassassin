@@ -317,6 +317,7 @@ class spamassassin(
   $spamd_max_children                 = 5,
   $spamd_listen_address               = '127.0.0.1',
   $spamd_allowed_ips                  = '127.0.0.1/32',
+  $spamd_username                     = undef,
   $spamd_nouserconfig                 = false,
   $spamd_allowtell                    = false,
   $spamd_log_enabled                  = false,
@@ -654,7 +655,7 @@ class spamassassin(
   }
   
   if $service_enabled {
-    $extra_options = inline_template("-m <%= @spamd_max_children %> -i <%= @spamd_listen_address %> -A <%= @spamd_allowed_ips %><% if @spamd_nouserconfig -%> --nouser-config<% end -%><% if @spamd_allowtell -%> --allow-tell<% end -%><% if @spamd_log_enabled -%> -s <%= @spamd_log_path %><% end -%>")
+    $extra_options = inline_template("-m <%= @spamd_max_children %> -i <%= @spamd_listen_address %> -A <%= @spamd_allowed_ips %><% if @spamd_username -%> --username=<%= @spamd_username %><% end -%><% if @spamd_nouserconfig -%> --nouser-config<% end -%><% if @spamd_allowtell -%> --allow-tell<% end -%><% if @spamd_log_enabled -%> -s <%= @spamd_log_path %><% end -%>")
 
     file_line { 'spamd_options' :
       path    => $spamassassin::params::spamd_options_file,
