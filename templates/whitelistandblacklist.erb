@@ -7,13 +7,13 @@ unwhitelist_from  <%= mailaddress %>
 <% end -%>
 
 <% @whitelist_from_rcvd.each do |domainname, mailaddresses| -%>
-<% @mailaddresses.each do |mailaddress| -%>
+<% mailaddresses.each do |mailaddress| -%>
 whitelist_from_rcvd  <%= mailaddress %>  <%= domainname %>
 <% end -%>
 <% end -%>
 
 <% @def_whitelist_from_rcvd.each do |domainname, mailaddresses| -%>
-<% @mailaddresses.each do |mailaddress| -%>
+<% mailaddresses.each do |mailaddress| -%>
 def_whitelist_from_rcvd  <%= mailaddress %>  <%= domainname %>
 <% end -%>
 <% end -%>
