@@ -323,6 +323,9 @@ class spamassassin(
   $spamd_log_enabled                  = false,
   $spamd_log_path                     = '/var/log/spamd.log',
   $spamd_custom_template_enabled      = false,
+  $spamd_options_file                 = $spamassassin::params::spamd_options_file,
+  $spamd_options_var                  = $spamassassin::params::spamd_options_var,
+  $spamd_options_values               = $spamassassin::params::spamd_defaults,
   # Scoring options
   $required_score                     = 5,
   $score_tests                        = {},
@@ -642,7 +645,7 @@ class spamassassin(
     # We enable the service regardless of our service_enabled parameter. Trying to
     # stop or start the spamassassin init script without the enabled will fail.
     file_line { 'spamd_service' :
-      path    => $spamassassin::params::spamd_options_file,
+      path    => $spamd_options_file,
       line    => "ENABLED=1",
       match   => '^ENABLED',
       notify  => Service['spamassassin'],
@@ -658,9 +661,9 @@ class spamassassin(
     $extra_options = inline_template("-m <%= @spamd_max_children %> -i <%= @spamd_listen_address %> -A <%= @spamd_allowed_ips %><% if @spamd_username -%> --username=<%= @spamd_username %><% end -%><% if @spamd_nouserconfig -%> --nouser-config<% end -%><% if @spamd_allowtell -%> --allow-tell<% end -%><% if @spamd_log_enabled -%> -s <%= @spamd_log_path %><% end -%>")
 
     file_line { 'spamd_options' :
-      path    => $spamassassin::params::spamd_options_file,
-      line    => "${spamassassin::params::spamd_options_var}=\"${spamassassin::params::spamd_defaults} ${extra_options}\"",
-      match   => "^${spamassassin::params::spamd_options_var}=\"[^\"]+\"$",
+      path    => $spamd_options_file,
+      line    => "${spamd_options_var}=\"${spamd_options_values} ${extra_options}\"",
+      match   => "^${spamd_options_var}=\"[^\"]+\"$",
       notify  => Service['spamassassin'],
       require => Package['spamassassin']
     }
