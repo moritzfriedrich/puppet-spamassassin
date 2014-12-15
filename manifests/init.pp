@@ -314,6 +314,8 @@ class spamassassin(
   $run_execs_as_user                  = undef,
   # Spamd settings
   $service_enabled                    = false,
+  $configdir                          = $spamassassin::params::configdir,
+  $sa_update_file                     = $spamassassin::params::sa_update_file,
   $spamd_max_children                 = 5,
   $spamd_listen_address               = '127.0.0.1',
   $spamd_allowed_ips                  = '127.0.0.1/32',
@@ -420,9 +422,8 @@ class spamassassin(
   $whitelist_auth                     = [],
   $def_whitelist_auth                 = [],
   $unwhitelist_auth                   = [],
-) {
-  include spamassassin::params
-
+) inherits spamassassin::params {
+ 
   validate_bool($service_enabled)
   validate_bool($spamd_nouserconfig)
   validate_bool($spamd_allowtell)
@@ -488,13 +489,13 @@ class spamassassin(
   $final_bayes_auto_expire = bool2num($bayes_auto_expire)
 
   $final_razor_home = $razor_home ? {
-    undef   => "${spamassassin::params::configdir}/.razor",
+    undef   => "${configdir}/.razor",
     default => $razor_home
   }
   validate_absolute_path($final_razor_home)
 
   $final_pyzor_home = $pyzor_home ? {
-    undef   => "${spamassassin::params::configdir}/.pyzor",
+    undef   => "${configdir}/.pyzor",
     default => $pyzor_home,
   }
   validate_absolute_path($final_pyzor_home)
@@ -586,7 +587,7 @@ class spamassassin(
 
   if $cmae_enabled {
     file_line { 'enable_cmae' :
-      path    => "${spamassassin::params::configdir}/init.pre",
+      path    => "${configdir}/init.pre",
       line    => "loadplugin Mail::SpamAssassin::Plugin::CMAE",
       match   => "^\s*loadplugin Mail::SpamAssassin::Plugin::CMAE\s*$",
       notify  => Service['spamassassin'],
@@ -595,19 +596,19 @@ class spamassassin(
   }
 
   file {
-    "${spamassassin::params::configdir}/local.cf":
+    "${configdir}/local.cf":
       ensure  => present,
       content => template('spamassassin/local_cf.erb'),
       require => Package['spamassassin'];
-    "${spamassassin::params::configdir}/v310.pre":
+    "${configdir}/v310.pre":
       ensure  => present,
       content => template('spamassassin/v310_pre.erb'),
       require => Package['spamassassin'];
-    "${spamassassin::params::configdir}/v312.pre":
+    "${configdir}/v312.pre":
       ensure  => present,
       content => template('spamassassin/v312_pre.erb'),
       require => Package['spamassassin'];
-    "${spamassassin::params::configdir}/v320.pre":
+    "${configdir}/v320.pre":
       ensure  => present,
       content => template('spamassassin/v320_pre.erb'),
       require => Package['spamassassin'];
@@ -621,7 +622,7 @@ class spamassassin(
             default => 0,
           }
           file_line { 'sa_update':
-            path    => $spamassassin::params::sa_update_file,
+            path    => $sa_update_file,
             line    => "CRON=${cron}",
             match   => "^CRON=[0-1]$",
             require => Package['spamassassin']
@@ -633,7 +634,7 @@ class spamassassin(
             default => 'no',
           }
           file_line { 'sa-update':
-            path    => $spamassassin::params::sa_update_file,
+            path    => $sa_update_file,
             line    => "SAUPDATE=${saupdate}",
             match   => "^#?SAUPDATE=",
             require => Package['spamassassin'] 
