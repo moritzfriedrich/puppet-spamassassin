@@ -465,11 +465,9 @@ class spamassassin(
   validate_array($def_whitelist_auth)
   validate_array($unwhitelist_auth)
 
-  validate_re($spamd_max_children, '^[1-9]([0-9]*)?$',
-  'spamd_max_children parameter should be a number')
+  validate_integer($spamd_max_children)
 
-  validate_re($required_score, '^[0-9]([0-9]*)?(\.[0-9]{1,2})?$',
-  'required_score parameter should be an integer or real number.')
+  validate_numeric($required_score)
 
   validate_re($dns_available, '^(test|yes|no)$',
   'dns_available parameter must have a value of: test, yes or no')
@@ -480,8 +478,7 @@ class spamassassin(
   validate_re($shortcircuit_priority_CMAE_1, '^(-)?[1-9]([0-9]*)?$',
   'shortcircuit_priority_CMAE_1 parameter should be a number')
 
-  validate_re($cmae_score_CMAE_1, '^[0-9]([0-9]*)?(\.[0-9]{1,2})?$',
-  'CMAE_score_CMAE_1 parameter should be a number')
+  validate_numeric($cmae_score_CMAE_1)
   
   $final_skip_rbl_checks   = bool2num($skip_rbl_checks)
   $final_bayes_use_hapaxes = bool2num($bayes_use_hapaxes)
