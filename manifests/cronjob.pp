@@ -34,7 +34,7 @@ define spamassassin::cronjob (
         fail('Please define parameter gpghomedir or channel.')
     }
 
-    file { "/etc/cron.${schedule}/spamassassin.${title}":
+    file { "/etc/cron.${schedule}/spamassassin_${title}":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
