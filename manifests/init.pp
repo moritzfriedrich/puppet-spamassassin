@@ -109,6 +109,9 @@
 # [*skip_rbl_checks*]
 # Boolean. If false SpamAssassin will run RBL checks. Default: true
 #
+# [*skip_uribl_checks*]
+# Boolean. If false SpamAssassin will run URIBL checks. Default: true
+#
 # [*dns_available*]
 # If set to 'test', SpamAssassin will query some default hosts on the 
 # internet to attempt to check if DNS is working or not. Default: yes
@@ -342,6 +345,7 @@ class spamassassin(
   $clear_internal_networks            = false,
   $internal_networks                  = [],
   $skip_rbl_checks                    = true,
+  $skip_uribl_checks                  = true,
   $dns_available                      = 'yes',
   # Learning options
   $bayes_enabled                      = true,
@@ -435,6 +439,7 @@ class spamassassin(
   validate_bool($bayes_auto_expire)
   validate_bool($bayes_sql_enabled)
   validate_bool($skip_rbl_checks)
+  validate_bool($skip_uribl_checks)
   validate_bool($dcc_enabled)
   validate_bool($pyzor_enabled)
   validate_bool($razor_enabled)
@@ -472,15 +477,18 @@ class spamassassin(
   validate_re($dns_available, '^(test|yes|no)$',
   'dns_available parameter must have a value of: test, yes or no')
 
-  validate_re($shortcircuit_CMAE_1, '^(undef|on|off)$',
-  'shortcircuit_CMAE_1 parameter must have a value of: on or off')
-
-  validate_re($shortcircuit_priority_CMAE_1, '^(-)?[1-9]([0-9]*)?$',
-  'shortcircuit_priority_CMAE_1 parameter should be a number')
-
-  validate_numeric($cmae_score_CMAE_1)
+  if $cmae_enabled {
+    if $shortcircuit_CMAE_1 {
+      validate_re($shortcircuit_CMAE_1, '^(on|off)$', 'shortcircuit_CMAE_1 parameter must have a value of: on or off')
+    
+      validate_re($shortcircuit_priority_CMAE_1, '^(-)?[1-9]([0-9]*)?$', 'shortcircuit_priority_CMAE_1 parameter should be a number')
+    }
+  
+    validate_numeric($cmae_score_CMAE_1)
+  }
   
   $final_skip_rbl_checks   = bool2num($skip_rbl_checks)
+  $final_skip_uribl_checks = bool2num($skip_uribl_checks)
   $final_bayes_use_hapaxes = bool2num($bayes_use_hapaxes)
   $final_bayes_auto_learn  = bool2num($bayes_auto_learn)
   $final_bayes_auto_expire = bool2num($bayes_auto_expire)
@@ -633,7 +641,8 @@ class spamassassin(
           file_line { 'sa-update':
             path    => $sa_update_file,
             line    => "SAUPDATE=${saupdate}",
-            match   => "^#?SAUPDATE=",
+            match   => "^SAUPDATE=",
+            after   => "^#?SAUPDATE=yes",
             require => Package['spamassassin'] 
           }
       }
