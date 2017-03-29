@@ -563,6 +563,15 @@ class spamassassin(
       unless    => "test -d ${final_pyzor_home}",
       require   => Package['pyzor'],
     }
+
+    file { "${final_pyzor_home}":
+      ensure => directory,
+      mode   => '0755'
+    } ->
+    file { "${final_pyzor_home}/servers":
+      ensure => file,
+      mode   => '0644'
+    }
   }
 
   # Install and setup razor
